@@ -460,9 +460,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   followSpeed: 10
-  fallSpeed: 0.75
-  rotateSpeed: 100
+  fallSpeed: 0.25
+  fallSpeedAceleration: 2
+  fallSpeedRampUpTime: 2
+  rotateSpeed: 50
+  rotateSpeedAceleration: 2
+  rotateSpeedRampUpTime: 2
   _rangeRot: 50
+  timerResetVelocity: 52
 --- !u!61 &1349214713
 BoxCollider2D:
   m_ObjectHideFlags: 0
