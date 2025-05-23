@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class MouseInputController : MonoBehaviour
 {
@@ -37,6 +39,11 @@ public class MouseInputController : MonoBehaviour
     private bool _isFloatingRight = true;
     private bool _isFalling;
 
+    [Header("Shadow")]
+    [SerializeField] GameObject shadow;
+    [SerializeField] SpriteRenderer shadowSprite;
+    [SerializeField] Vector3 offset;
+
 
     private void Start()
     {
@@ -57,6 +64,9 @@ public class MouseInputController : MonoBehaviour
         {
             _isOnMouse = false;
         }
+
+        shadow.transform.position = new Vector3(transform.position.x, _randFinalPos, 0) + offset;
+
 
         if (Input.GetMouseButton(0) == true && _isClicking)
         {
@@ -87,6 +97,9 @@ public class MouseInputController : MonoBehaviour
         if (Input.GetMouseButtonUp(0) == true)
         {
             _isClicking = false;
+            Color temp = Color.white;
+            temp.a = 0;
+            shadowSprite.color = temp;
             if (transform.position.y >= 1)
                 _randFinalPos = UnityEngine.Random.Range(-3.5f, 1);
 
@@ -138,6 +151,9 @@ public class MouseInputController : MonoBehaviour
         if (!_desacelerate)
         {
             rotateSpeed = Mathf.Lerp(rotateSpeed, _origialRotSpeed * rotateSpeedAceleration, rotateSpeedRampUpTime * Time.deltaTime);
+            Color tmp = shadowSprite.color;
+            tmp.a = Mathf.Lerp(tmp.a, 0.75f, (rotateSpeedRampUpTime / 3) * Time.deltaTime);
+            shadowSprite.color = tmp;
         }
         else
         {
